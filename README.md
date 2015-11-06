@@ -1,4 +1,4 @@
-<img src="/images/logo.png" alt="warpvm" width="250">
+<img src="/assets/logo.png" alt="warpvm" width="180">
 
 > Ultra-lightweight interface for multithreaded declarative web applications.
 
@@ -7,11 +7,6 @@
 > **Mary:** `warpvm` abstracts browser API's and the main execution thread creating an efficient, isolated environment to multithread applications; loosely "a vm for the wild web".
 
 **Status**: `warpvm` is still in a very unstable experimental stage. It is highly encouraged not to use this software yet.
-
-## Installation
-```javascript
-npm install warpvm
-```
 
 ## Usage
 Loading your application.
