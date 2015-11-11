@@ -83,7 +83,7 @@ export function WarpApplicationThreadManager(vd) {
   //       width: (100 + count) + 'px',
   //       height: (100 + count) + 'px'
   //     }
-  //   }, [String(count)]);
+  //   }, [String(count)])
   // }
   //
   // console.log(diffDOM(render(1), render(2)))
