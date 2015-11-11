@@ -1,4 +1,6 @@
-<img src="/assets/logo.png" alt="warpvm" width="180"> [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+# <img src="/assets/logo.png" alt="warpvm" width="220">
+
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
 > Ultra-lightweight interface for multithreaded declarative web applications.
 
