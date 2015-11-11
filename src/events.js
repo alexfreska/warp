@@ -1,5 +1,5 @@
-export var Events = {
-  getMap: function() {
+export const Events = {
+  getMap() {
     return {
       blur: false,
       change: false,
@@ -25,7 +25,7 @@ export var Events = {
       scroll: false,
       select: false,
       submit: false
-    };
+    }
   },
-  string: "blur change click dblclick error focus focusin focusout hover keydown keypress keyup load mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup resize scroll select submit"
-};
+  getString() { return "blur change click dblclick error focus focusin focusout hover keydown keypress keyup load mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup resize scroll select submit" }
+}

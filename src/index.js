@@ -1,2 +1,2 @@
-import {WarpManger} from "./warp-manager";
-WarpManager();
+import { WarpMainThreadManager } from "./warp-main";
+WarpMainThreadManager();

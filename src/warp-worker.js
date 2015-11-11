@@ -1,45 +1,92 @@
-import {Events} from "events";
+export function WarpApplicationThreadManager(vd) {
+  // TODO add precompile step to inline this
+  var vd = require('virtual-dom')
+  console.log('WarpWorker running...')
 
-function stripEvents(rootNode) {
-  // walk through v-dom object and grap all event hashes
-  return [cleanDom, eventsObj];
-}
-
-var eventStore = {
-  "wfeji": {
-    click: function() { console.log("blue") },
-    hover: function() { console.log("red") }
-  },
-  "578jx": {
-    mouseout: function() { console.log("yellow") }
+  /**
+   * walk through v-dom object and grap all event hashes
+   *
+   * @param {VirtualTree} vTree
+   * @return {[VirtualTree, Object]}
+   */
+  function stripEvents(vTree) {
+    // TODO
+    var cleanDOM = {}
+    var events = {}
+    return [cleanDOM, events]
   }
-}
 
-function computeEventMap(nextEventFuncMap) {
-  var wids = Object.keys(nextEventFuncMap);
-  var resMap = {};
-  wids.forEach(function(wid) {
-    var events = Object.keys(nextEventFuncMap[wid]);
-    var resEvents = {};
-    events.forEach(function(e) {
-      resEvents[e] = true;
-    });
-    resMap[wid] = resEvents;
-  });
-  return resMap;
-}
-
-function diffDOM(prevDOM, nextDOM) {
-
-}
-
-export function WarpWorker() {
-  onmessage = function(e) {
-    var d = e.data;
-    d.event && eventStore[d.wid]
-    && eventStore[d.wid][d.event]();
-    postMessage({report: true});
+  /**
+   * state
+   */
+  var eventSubMap = {
+    'wfeji': {
+      click: () => console.log('blue'),
+      hover: () => console.log('red')
+    },
+    '578jx': {
+      mouseout: () => console.log('yellow')
+    }
   }
-  postMessage({eventMap: computeEventMap(eventStore)});
+
+  /**
+   * translate event callback mapping into a boolean mapping
+   *
+   * @param {Object} subFuncMap
+   * @return {Object} subBoolMap
+   */
+  function computeEventMap(subFuncMap) {
+    var wids = Object.keys(subFuncMap)
+    var subBoolMap = {}
+    wids.forEach(wid => {
+      var events = Object.keys(subFuncMap[wid])
+      var evBoolMap = {}
+      events.forEach(e => {
+        evBoolMap[e] = true
+      })
+      subBoolMap[wid] = evBoolMap
+    })
+    return subBoolMap
+  }
+
+  /**
+   * calculate DOM patch
+   * @param {VirtualTree} prevVTree
+   * @param {VirtualTree} nextVTree
+   * @return {Object}
+   */
+  function diffDOM(prevVTree, nextVTree) {
+    // return vd.diff(prevVTree, nextVTree)
+  }
+
+  /**
+   * setup message passing subscriptions
+   */
+  onmessage = e => {
+    var d = e.data
+    d.event && eventSubMap[d.wid]
+    && eventSubMap[d.wid][d.event]()
+    postMessage({report: true})
+  }
+
+  /**
+   * initial subs
+   */
+  postMessage({eventMap: computeEventMap(eventSubMap)})
+
+  // function render(count)  {
+  //   return vd.h('div', {
+  //     style: {
+  //       textAlign: 'center',
+  //       lineHeight: (100 + count) + 'px',
+  //       border: '1px solid red',
+  //       width: (100 + count) + 'px',
+  //       height: (100 + count) + 'px'
+  //     }
+  //   }, [String(count)]);
+  // }
+  //
+  // console.log(diffDOM(render(1), render(2)))
+
 }
 
