@@ -12,7 +12,7 @@ export function WarpMainThreadManager() {
   /** 
    * initialize application thread
    */
-  const m = createWorker(WarpApplicationThreadManager)
+  const m = createWorker(WarpApplicationThreadManager, vd)
 
   /**
    * requires constants
@@ -29,6 +29,7 @@ export function WarpMainThreadManager() {
    * setup message passing subscriptions
    */
   m.onmessage = e => {
+
     // event updates
     e.data.eventMap && (eventMap = e.data.eventMap)
   }

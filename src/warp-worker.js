@@ -1,6 +1,6 @@
 export function WarpApplicationThreadManager(vd) {
   // TODO add precompile step to inline this
-  var vd = require('virtual-dom')
+  // var vd = require('virtual-dom')
   console.log('WarpWorker running...')
 
   /**
@@ -63,10 +63,16 @@ export function WarpApplicationThreadManager(vd) {
    * setup message passing subscriptions
    */
   onmessage = e => {
-    var d = e.data
+    var d = e && e.data || {}
+
+    // d.argURL && importScripts(d.argURL.split("blob:")[1].replace(/\%3A/g,":"))
+    // d.argURL && console.log("loaded " +d.argURL)
+    // return
+
     d.event && eventSubMap[d.wid]
     && eventSubMap[d.wid][d.event]()
-    postMessage({report: true})
+    return
+
   }
 
   /**
