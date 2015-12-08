@@ -13,7 +13,7 @@ var chalk       = require('chalk')
 
 gulp.task('dev', function () {
   var args = merge(watchify.args, { debug: true })
-  var bundler = watchify(browserify('./src/index.js', args))
+  var bundler = watchify(browserify('./src/main.js', args))
   .transform(babelify, {presets: ['es2015']})
   bundlePipeline(bundler)
   bundler.on('update', function () {
@@ -42,14 +42,14 @@ gulp.task('prod', function () {
 function bundlePipeline(bundler) {
   return bundler.bundle()
     .on('error', beautifyError)
-    .pipe(source('index.js'))
+    .pipe(source('main.js'))
     .pipe(buffer())
-    .pipe(gulp.dest('test/build'))
+    .pipe(gulp.dest('./test/build'))
     .pipe(rename('warpvm.js'))
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(uglify())
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('test/build'))
+    .pipe(gulp.dest('./test/build'))
 }
 
 function beautifyError(err) {

@@ -15,7 +15,7 @@ function createFuncBlobWithVDOM(func, vDOM) {
   var arr = keys.map(key => {
     return 'var ' + key + ' = ' + obj[key] + ';'
   })
-  console.log(arr)
+  console.log(arr.forEach(function(i) {console.log(i.split("=")[0])}))
   return URL.createObjectURL(new Blob([
     ...arr,
     '(',

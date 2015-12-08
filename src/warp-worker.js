@@ -2,6 +2,8 @@ export function WarpApplicationThreadManager(vd) {
   // TODO add precompile step to inline this
   // var vd = require('virtual-dom')
   console.log('WarpWorker running...')
+  console.log(diff)
+  console.log(patch)
 
   /**
    * walk through v-dom object and grap all event hashes
@@ -56,7 +58,7 @@ export function WarpApplicationThreadManager(vd) {
    * @return {Object}
    */
   function diffDOM(prevVTree, nextVTree) {
-    // return vd.diff(prevVTree, nextVTree)
+    return diff(prevVTree, nextVTree)
   }
 
   /**
@@ -80,19 +82,19 @@ export function WarpApplicationThreadManager(vd) {
    */
   postMessage({eventMap: computeEventMap(eventSubMap)})
 
-  // function render(count)  {
-  //   return vd.h('div', {
-  //     style: {
-  //       textAlign: 'center',
-  //       lineHeight: (100 + count) + 'px',
-  //       border: '1px solid red',
-  //       width: (100 + count) + 'px',
-  //       height: (100 + count) + 'px'
-  //     }
-  //   }, [String(count)])
-  // }
-  //
-  // console.log(diffDOM(render(1), render(2)))
+  function render(count)  {
+    return h('div', {
+      style: {
+        textAlign: 'center',
+        lineHeight: (100 + count) + 'px',
+        border: '1px solid red',
+        width: (100 + count) + 'px',
+        height: (100 + count) + 'px'
+      }
+    }, [String(count)])
+  }
+
+  console.log(diffDOM(render(1), render(2)))
 
 }
 
