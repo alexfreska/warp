@@ -1,9 +1,7 @@
-export function WarpApplicationThreadManager(vd) {
-  // TODO add precompile step to inline this
-  // var vd = require('virtual-dom')
+import * as vd from 'virtual-dom'
+
+function WarpApplicationThreadManager(vd) {
   console.log('WarpWorker running...')
-  console.log(diff)
-  console.log(patch)
 
   /**
    * walk through v-dom object and grap all event hashes

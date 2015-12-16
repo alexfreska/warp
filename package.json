@@ -37,6 +37,7 @@
     "watchify": "^3.6.0"
   },
   "dependencies": {
+    "event-stream": "^3.3.2",
     "jquery": "^2.1.4",
     "virtual-dom": "^2.1.1"
   }

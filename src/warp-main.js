@@ -6,7 +6,9 @@ var $ = require('jquery')
 
 // import * as vd from 'virtual-dom'
 
-export function WarpMainThreadManager() {
+WarpMainThreadManager()
+
+function WarpMainThreadManager() {
   console.log('Bootstrapping WarpVM')
 
   /** 
