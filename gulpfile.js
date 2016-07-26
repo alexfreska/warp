@@ -11,6 +11,7 @@ var sourcemaps  = require('gulp-sourcemaps')
 var gutil       = require('gulp-util')
 var chalk       = require('chalk')
 var es          = require('event-stream')
+var watch       = require('gulp-watch')
 
 gulp.task('dev', function () {
   var args = merge(watchify.args, { debug: true })
@@ -22,36 +23,33 @@ gulp.task('dev', function () {
   })
 })
 
-gulp.task('double', function () {
-  var files = [
-    './src/warp-main.js',
-    './src/warp-worker.js'
-  ]
-  // map them to our stream function
-  var tasks = files.map(function(entry) {
-    return browserify(entry)
+gulp.task('test', function () {
+  compileToTest('./src/warp-worker.js')
+  compileToTest('./src/warp-main.js')
+  watch('./src/warp-worker.js', compileToTest.bind(this, './src/warp-worker.js'))
+  watch('./src/warp-main.js', compileToTest.bind(this, './src/warp-main.js'))
+})
+
+function compileToTest(file) {
+  return browserify(file)
     .transform(babelify, {presets: ['es2015']})
     .bundle()
     .on('error', beautifyError)
-    .pipe(source(entry))
+    .pipe(source(file))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(uglify())
     .pipe(sourcemaps.write('.'))
-    .pipe(rename(entry.split("/")[2]))
-    // .pipe(rename({
-    //   extname: '.bundle.js'
-    // }))
+    .pipe(rename(file.split("/")[2]))
+    .pipe(rename({
+      extname: '.bundle.js'
+    }))
     .pipe(gulp.dest('./test/build'))
-  })
-  // create a merged stream
-  return es.merge.apply(null, tasks)
-})
+}
 
 gulp.task('build', function () {
   browserify('./src/warp-worker.js', { debug: true })
   .transform(babelify, {presets: ['es2015']})
-  bundler = browserify('./src/main.js', { debug: true })
+  bundler = browserify('./src/warp-main.js', { debug: true })
   .transform(babelify, {presets: ['es2015']})
   return bundlePipeline(bundler)
 })

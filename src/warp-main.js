@@ -1,51 +1,43 @@
 import { createWorker } from './create-worker'
-import { WarpApplicationThreadManager } from './warp-worker'
 import { Events } from './events'
 import * as vd from 'virtual-dom'
 var $ = require('jquery')
 
-// import * as vd from 'virtual-dom'
+WarpMain()
 
-WarpMainThreadManager()
-
-function WarpMainThreadManager() {
-  console.log('Bootstrapping WarpVM')
-
-  /** 
-   * initialize application thread
-   */
-  const m = createWorker(WarpApplicationThreadManager, vd)
-
-  /**
-   * requires constants
-   */
-  const events = Events.getString()
-
-  /**
-   * state managment
-   */
-  var eventMap = {}
-  var vTree = null
-
-  /**
-   * setup message passing subscriptions
-   */
-  m.onmessage = e => {
-
-    // event updates
-    e.data.eventMap && (eventMap = e.data.eventMap)
-  }
-
-  /**
-   * setup top level event listener
-   */
+function WarpMain() {
   $(() => {
-    $('body').on(events, e => {
+    /** 
+    * initialize application thread
+    */
+    // const m = createWorker(WarpApplicationThreadManager)
+    const m = new Worker("build/warp-worker.bundle.js")
+    m.postMessage({type: 'application', url: '/test/build/app.js'})
+
+    /**
+    * initialize root
+    */
+    var rootNode = null
+
+    /**
+    * setup message passing subscriptions
+    */
+    m.onmessage = e => {
+      if(e.data.patch) {
+        rootNode = vd.patch(rootNode, e.data.patch)
+      } else if(e.data.dom) {
+        rootNode = vd.create(e.data.dom)
+        document.body.appendChild(rootNode)
+      }
+    }
+
+    /**
+    * setup top level event listener
+    */
+    $('body').on(Events.getString(), e => {
       var x = e.target.attributes['data-wid']
       var wid = x && x.nodeValue
-      // checks events, we could just optimistically send
-      wid && eventMap[wid] && eventMap[wid][e.type]
-      && m.postMessage({event: e.type, wid: wid})
+      m.postMessage({value: e.target && e.target.value, event: e.type, wid: wid})
     })
   })
 }
